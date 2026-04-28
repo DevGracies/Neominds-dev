@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+/* Base styles */
+/* 🌞 LIGHT MODE BACKGROUND */
+body {
+  background: linear-gradient(135deg, #f5f7fa, #e4ecf7);
+  min-height: 100vh;
+}
+
+/* 🌙 DARK MODE BACKGROUND (PREMIUM) */
+.dark body {
+  background: radial-gradient(circle at 20% 10%, rgba(11,166,166,0.08), transparent 40%),
+              radial-gradient(circle at 80% 90%, rgba(0,0,0,0.9), #000);
+}
+/* Clean Inputs */
+.input {
+  @apply w-full border p-3 rounded-xl outline-none transition;
+}
