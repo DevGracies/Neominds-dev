@@ -16,8 +16,6 @@ export default function LoginPage() {
     setIsLoading(true);
     setError(null);
 
-    // This simulates the check the team requested. 
-    // It allows you to demonstrate the redirect to /dashboard immediately.
     try {
       if (email === "hr@neominds.com" && password === "admin123") {
         // Small delay to make it look like a real database check
