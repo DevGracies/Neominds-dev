@@ -1,0 +1,15 @@
+{
+  "name": "NeomindS-deV",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "npm run dev --prefix Neominds-dev/frontend",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0",
+    "typescript": "^5.5.3"
+  },
+  "private": true
+}
