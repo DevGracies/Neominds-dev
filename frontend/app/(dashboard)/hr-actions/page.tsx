@@ -1,11 +1,14 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Search, UserCircle, Briefcase, FileWarning, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Search, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
+import LeaveManagement from '@/components/hr/LeaveManagement';
+import ReassignRole from '@/components/hr/ReassignRole';
 
 export default function HRActionsPage() {
+  const [activeTab, setActiveTab] = useState('Reassign Role');
   return (
     <div className="min-h-screen bg-slate-50 p-8">
       <div className="flex items-center justify-between">
@@ -75,12 +78,27 @@ export default function HRActionsPage() {
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white rounded-2xl shadow-soft border border-slate-100 p-1">
             {/* Tabs */}
-            <div className="flex border-b border-slate-100 p-3 gap-2 overflow-x-auto">
+            {/* <div className="flex border-b border-slate-100 p-3 gap-2 overflow-x-auto">
               {['Reassign Role', 'Update Status', 'Leave Management', 'Disciplinary'].map((tab, idx) => (
                 <button 
                   key={tab}
                   className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${
                     idx === 0 ? 'bg-brand-primary text-white' : 'text-slate-500 hover:bg-slate-50'
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div> */}
+            <div className="flex border-b border-slate-100 p-3 gap-2 overflow-x-auto">
+              {['Reassign Role', 'Update Status', 'Leave Management', 'Disciplinary'].map((tab) => (
+                <button 
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${
+                    activeTab === tab 
+                      ? 'bg-brand-primary text-slate-100 bg-slate-500' 
+                      : 'text-slate-500 hover:bg-slate-50'
                   }`}
                 >
                   {tab}
@@ -94,53 +112,22 @@ export default function HRActionsPage() {
               animate={{ opacity: 1 }} 
               className="p-6"
             >
-              <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <Briefcase size={20} className="text-brand-accent" /> Reassign Staff Role
-              </h3>
-              
-              <form className="space-y-5">
-                <div className="grid grid-cols-2 gap-5">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-700">New Job Title</label>
-                    <select className="w-full p-3 bg-slate-50 rounded-xl border border-slate-200 outline-none focus:border-brand-accent">
-                      <option>Select new role...</option>
-                      <option>Branch Head</option>
-                      <option>F & B Manager</option>
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-700">New Branch</label>
-                    <select className="w-full p-3 bg-slate-50 rounded-xl border border-slate-200 outline-none focus:border-brand-accent">
-                      <option>Select branch...</option>
-                      <option>Abuja - Wuse</option>
-                      <option>Lagos - Victoria Island</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700">Effective Date</label>
-                  <input type="date" className="w-full p-3 bg-slate-50 rounded-xl border border-slate-200 outline-none focus:border-brand-accent" />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700">Reason for Reassignment</label>
-                  <textarea 
-                    rows={4} 
-                    className="w-full p-3 bg-slate-50 rounded-xl border border-slate-200 outline-none focus:border-brand-accent resize-none"
-                    placeholder="Provide detailed context for this change..."
-                  ></textarea>
-                </div>
-
-                <div className="pt-4 flex justify-end gap-3">
-                  <button type="button" className="px-5 py-2.5 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl font-medium transition">
-                    Cancel
-                  </button>
-                  <button type="submit" className="px-5 py-2.5 bg-brand-primary text-white rounded-xl font-medium shadow-soft hover:bg-blue-900 transition flex items-center gap-2">
-                    <UserCircle size={18} /> Update Assignment
-                  </button>
-                </div>
-              </form>
+              {/* Assaign Role */}
+              {activeTab === 'Reassign Role' && (
+                <ReassignRole />
+              )}
+              {/* Leave Management */}
+              {activeTab === 'Leave Management' && (
+                <LeaveManagement />
+              )}
+              {/* Update Status */}
+              {activeTab === 'Update Status' && (
+                <div className="text-sm text-slate-500">Update Status content coming...</div>
+              )}
+              {/* Displinary */}
+              {activeTab === 'Disciplinary' && (
+                <div className="text-sm text-slate-500">Disciplinary actions coming...</div>
+              )}
             </motion.div>
           </div>
         </div>
