@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Lock, Mail, Loader2 } from 'lucide-react'; // Standard icons
+import { useAuth } from '@/context/AuthContext';
 
 export default function LoginPage() {
   const [email, setEmail] = useState<string>('');
@@ -10,6 +11,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleLogin = async (e: React.SubmitEvent) => {
     e.preventDefault();
@@ -17,7 +19,7 @@ export default function LoginPage() {
     setError(null);
 
     try {
-        const data  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`, {
+        const res  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`, {
           method: "POST",
           credentials: "include",
           headers: {
@@ -26,12 +28,13 @@ export default function LoginPage() {
           body: JSON.stringify({ email, password })
         })
 
-        const res = await data.json();
-        console.log("Response", res)
+        const data = await res.json();
+        login(data.token)
+        console.log("Response", data)
 
-        if(!res.success){
-          setError(res.message);
-          throw new Error(res.message || "Login Failed");
+        if(!data.success){
+          setError(data.message);
+          throw new Error(data.message || "Login Failed");
         }
         router.push('/dashboard');
     } catch (err: any) {
