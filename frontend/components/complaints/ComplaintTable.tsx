@@ -2,14 +2,45 @@
 
 import { useState } from "react";
 
-type Complaint = {
+ interface Complaint {
   id: number;
   employee: string;
   role: string;
   date: string;
-  status: string;
+  status?: 'Pending' | 'Resolved';
   text: string;
-};
+}
+//fetch complaints from api
+export async function fetchComplaints(): Promise<Complaint[] | null> {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || " http://localhost:3000/api/v1";
+  const res = await fetch(`${API_URL}/complaints`);
+
+if (!res.ok) {
+    throw new Error("Failed to fetch complaints")
+    
+  } 
+
+  return res.json();
+}
+  
+//submit complaint to api
+export async function submitComplaint(data: Omit<Complaint, 'id'>): Promise<Complaint> {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || " http://localhost:3000/api/v1";
+  const res = await fetch(`${API_URL}/complaints`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to submit complaint");
+  }
+
+  return res.json();
+}
+
 
 export default function ComplaintTable({
   complaints,
