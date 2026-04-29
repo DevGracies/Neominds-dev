@@ -9,6 +9,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.SubmitEvent) => {
@@ -38,6 +39,7 @@ export default function LoginPage() {
     }
   };
 
+  if (!mounted) return null; 
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#f4f7fe] px-4" suppressHydrationWarning>
