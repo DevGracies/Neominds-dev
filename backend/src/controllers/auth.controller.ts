@@ -6,8 +6,34 @@ import { generateToken } from "../utils/token.js";
 import bcrypt from "bcrypt";
 import { catchAsync } from "../utils/catchAsync.js";
 import { AppError } from "../utils/AppError.js";
-import { env } from "../config/env.js";
 
+export const getUsers = catchAsync(async(req:Request, res:Response) => {
+    const users = await User.find();
+    if(!users || users.length === 0){
+      throw new Error("No users found")
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Users fetched succcessfully",
+      users,
+    })
+})
+
+export const getUser = catchAsync(async(req:Request, res:Response) => {
+  const user = await User.findById((req as any).user._id);
+  if(!user){
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    })
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "User fetched successfully",
+    user,
+  })
+})
 // Register
 export const register = catchAsync(async (req: Request, res: Response) => {
   const parsed = registerSchema.safeParse(req.body);
@@ -35,12 +61,14 @@ export const register = catchAsync(async (req: Request, res: Response) => {
     user: user.id,
     contact: {
       email,
+      surname: "N/A",
+      firstName: "N/A",
+      lastName: "N/A",
+      phoneNumber: "N/A",
     },
   } as any);
   const token = generateToken(
-    { id: user._id.toString(), role: user.role },
-    res,
-  );
+    { id: user._id.toString(), role: user.role });
   return res.status(201).json({
     success: true,
     token,
@@ -59,19 +87,21 @@ export const login = catchAsync(async (req: Request, res: Response) => {
 
     if (!user) {
       return res.status(404).json({
+        success: false,
         message: "Invalid credentials",
       });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      new AppError("Invalid credentials", 400);
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credentials",
+      });
     }
 
     const token = generateToken(
-      { id: user._id.toString(), role: user.role },
-      res,
-    );
+      { id: user._id.toString(), role: user.role });
     return res.status(200).json({
       token,
       success: true,
@@ -80,11 +110,6 @@ export const login = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const logout = catchAsync(async (req: Request, res: Response) => {
-    res.clearCookie("jwt", {
-      httpOnly: true,
-      secure: env.NODE_ENV === "production",
-      sameSite: "strict",
-    });
     return res.status(200).json({
       success: true,
       message: "Logout successful",

@@ -1,5 +1,6 @@
 // components/layout/TopNav.tsx
 "use client";
+import { useAuth } from '@/context/AuthContext';
 import { Search, Bell, HelpCircle, Moon } from 'lucide-react';
 import { useTheme } from "next-themes";
 
@@ -8,6 +9,18 @@ export default function Navbar() {
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
+
+  const {user} = useAuth();
+
+  console.log(user);
+  const getInitials = (name: string = "") => {
+    const parts = name.trim().split(" ");
+    if (parts.length === 0) return "";
+    if (parts.length === 1) return parts[0][0]?.toUpperCase() || "";
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
+
+  const initials = getInitials(user?.name)
 
   return (
     <header className="h-20 border-b border-gray-200  backdrop-blur-md sticky top-0 z-30 px-8 flex items-center justify-between">
@@ -38,6 +51,7 @@ export default function Navbar() {
         <button className="p-2 text-gray-400 hover:text-brand-navy hover:bg-gray-100 rounded-full transition-all">
           <HelpCircle size={20} />
         </button>
+        <div className='text-white border-white border p-2 rounded-full'>{user && initials}</div>
 
         <div className="h-6 w-px bg-gray-200 mx-1" />
 
