@@ -14,9 +14,11 @@ const Logout = () => {
         },
       );
       const res = await data.json();
-      if (!data.ok) {
-        throw new Error(res.message || "Logout failed");
-      }
+      console.log("Response", res)
+
+        if(!res.success){
+          throw new Error(res.message || "Logout Failed");
+        }
       router.push("/");
     } catch (err: any) {
       console.error(err);
