@@ -11,19 +11,27 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.SubmitEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
     try {
-      if (email === "hr@neominds.com" && password === "admin123") {
-        // Small delay to make it look like a real database check
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        const data  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password })
+        })
+
+        const res = await data.json();
+
+        if(!data.ok){
+          throw new Error(res.message || "Login Failed")
+        }
         router.push('/dashboard');
-      } else {
-        throw new Error("Invalid HR credentials");
-      }
     } catch (err: any) {
       setError(err.message);
       setIsLoading(false);
@@ -84,7 +92,7 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || !email || !password}
               className="flex w-full items-center justify-center rounded-lg bg-blue-600 py-3 text-sm font-bold text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all disabled:opacity-70"
             >
               {isLoading ? (
