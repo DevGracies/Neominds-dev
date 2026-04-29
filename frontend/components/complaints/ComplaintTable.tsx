@@ -7,7 +7,7 @@ import { useState } from "react";
   employee: string;
   role: string;
   date: string;
-  status?: 'Pending' | 'Resolved';
+  status: string;
   text: string;
 }
 //fetch complaints from api
