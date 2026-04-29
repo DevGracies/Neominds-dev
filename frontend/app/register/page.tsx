@@ -98,21 +98,25 @@ export default function StaffRegistration() {
 
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans">
+    <div className="p-8 max-w-7xl mx-auto space-y-8 font-sans">
       <Toaster position="top-right" />
       {/* Top Progress Bar */}
-      <motion.div style={{ scaleX }} className="fixed top-0 left-0 right-0 h-1.5 bg-teal-500 origin-left z-50" />
+      <motion.div style={{ scaleX }} className="fixed top-0 left-0 right-0 h-1.5 bg-brand-accent origin-left z-50" />
 
-      <main className="max-w-6xl mx-auto px-6 py-12 flex gap-12">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-brand-primary">Staff Registration</h1>
+          <p className="text-slate-500 mt-1">Onboarding Experience</p>
+        </div>
+      </div>
+
+      <main className="flex gap-12">
         
         {/* Left: Sticky Navigation */}
         <nav className="hidden lg:block w-64 h-fit sticky top-12 space-y-2">
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-[#0B1F3B]">Staff Portal</h1>
-            <p className="text-slate-500 text-sm">Onboarding Experience</p>
-          </div>
           {SECTIONS.map((s) => (
-            <a key={s.id} href={`#${s.id}`} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white hover:shadow-sm text-slate-500 hover:text-teal-600 transition-all group">
+            <a key={s.id} href={`#${s.id}`} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white hover:shadow-sm text-slate-500 hover:text-brand-accent transition-all group">
               <s.icon size={18} className="group-hover:scale-110 transition-transform" />
               <span className="font-medium">{s.label}</span>
             </a>
@@ -133,13 +137,13 @@ export default function StaffRegistration() {
                  onChange={(e) => handleFileChange(e, 'passport')} 
                  accept="image/*" 
                />
-              <div className="border-2 border-dashed border-slate-200 rounded-2xl p-8 flex flex-col items-center justify-center bg-slate-50/50 hover:bg-teal-50/30 hover:border-teal-200 transition-colors cursor-pointer group" onClick={() => passportInputRef.current?.click()}>
+              <div className="border-2 border-dashed border-slate-200 rounded-2xl p-8 flex flex-col items-center justify-center bg-slate-50/50 hover:bg-slate-100 hover:border-brand-accent transition-colors cursor-pointer group" onClick={() => passportInputRef.current?.click()}>
                   {previews.passport ? (
                   <img src={previews.passport} alt="Preview" className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg" />
                  ) : (
-                   <CloudUpload className="text-teal-600" />
+                   <CloudUpload className="text-brand-accent" />
                  )}
-                <p className="mt-3 text-sm text-slate-600">Drag and drop or <span className="text-teal-600 font-bold">browse</span></p>
+                <p className="mt-3 text-sm text-slate-600">Drag and drop or <span className="text-brand-accent font-bold">browse</span></p>
                 <p className="text-xs text-slate-400 mt-1">PNG, JPG up to 5MB</p>
               </div>
             </div>
@@ -149,7 +153,7 @@ export default function StaffRegistration() {
           <SectionCard title="Identification" icon={ShieldCheck} id="id">
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-semibold text-slate-700">Means of ID</label>
-              <select className="px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none focus:border-teal-500">
+              <select className="px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none focus:border-brand-accent">
                 <option>International Passport</option>
                 <option>National ID Card (NIN)</option>
                 <option>Driver's License</option>
@@ -163,11 +167,11 @@ export default function StaffRegistration() {
             <div className="md:col-span-2 flex p-1 bg-slate-100 rounded-xl w-fit">
               <button 
                 onClick={() => setMaritalStatus('single')}
-                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${maritalStatus === 'single' ? 'bg-white shadow-sm text-teal-600' : 'text-slate-500'}`}
+                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${maritalStatus === 'single' ? 'bg-white shadow-sm text-brand-accent' : 'text-slate-500'}`}
               >Single</button>
               <button 
                 onClick={() => setMaritalStatus('married')}
-                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${maritalStatus === 'married' ? 'bg-white shadow-sm text-teal-600' : 'text-slate-500'}`}
+                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${maritalStatus === 'married' ? 'bg-white shadow-sm text-brand-accent' : 'text-slate-500'}`}
               >Married</button>
             </div>
             
@@ -196,15 +200,15 @@ export default function StaffRegistration() {
           </SectionCard>
 
           {/* Submission Area */}
-          <div className="mt-12 p-8 bg-[#0B1F3B] rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="mt-12 p-8 bg-brand-primary rounded-3xl shadow-soft border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
               <h3 className="text-white text-xl font-bold">Ready to join?</h3>
-              <p className="text-slate-400 text-sm">Please review all information for accuracy.</p>
+              <p className="text-slate-300 text-sm">Please review all information for accuracy.</p>
             </div>
             <button
             disabled={isSubmitting} 
               onClick={() => setIsSubmitting(true)}
-              className="w-full md:w-auto px-10 py-4 bg-teal-500 hover:bg-teal-400 text-[#0B1F3B] font-bold rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+              className="w-full md:w-auto px-10 py-4 bg-brand-accent hover:bg-teal-500 text-white font-bold rounded-xl shadow-soft transition-all active:scale-95 flex items-center justify-center gap-2"
             >
               {isSubmitting ? "Processing..." : "Submit Registration"}
               {!isSubmitting && <CheckCircle2 size={18} />}
