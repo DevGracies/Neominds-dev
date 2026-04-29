@@ -128,8 +128,13 @@ export default function StaffRegistration() {
           
           {/* Section: Personal Info */}
           <SectionCard title="Personal Information" icon={User} id="personal">
-            <InputField label="Surname" placeholder="Enter surname" onChange={handleInputChange} value={form.surname} />
-            <InputField label="First Name" placeholder="Enter first name" onChange={handleInputChange} value={form.firstName} />
+            <InputField label="Surname" name="surname" placeholder="Enter surname" onChange={handleInputChange} value={form.surname} />
+            <InputField label="First Name" name="firstName" placeholder="Enter first name" onChange={handleInputChange} value={form.firstName} />
+            <InputField label="Last Name" name="lastName" placeholder="Enter last name" onChange={handleInputChange} value={form.lastName} />
+            <InputField label="Date of Birth" name="dateOfBirth" type="date" onChange={handleInputChange} value={form.dateOfBirth} />
+            <div className="md:col-span-2">
+              <InputField label="Address" name="address" placeholder="Residential address" onChange={handleInputChange} value={form.address} />
+            </div>
             <div className="md:col-span-2">
               <label className="text-sm font-semibold text-slate-700 block mb-2">Passport Photograph</label>
               <input 
@@ -138,8 +143,10 @@ export default function StaffRegistration() {
                  accept="image/*" 
                />
               <div className="border-2 border-dashed border-slate-200 rounded-2xl p-8 flex flex-col items-center justify-center bg-slate-50/50 hover:bg-slate-100 hover:border-brand-accent transition-colors cursor-pointer group" onClick={() => passportInputRef.current?.click()}>
-                  {previews.passport ? (
-                  <img src={previews.passport} alt="Preview" className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg" />
+                  {files.passportPhoto ? (
+                  <div className="w-24 h-24 rounded-full bg-slate-200 flex items-center justify-center border-4 border-white shadow-lg overflow-hidden">
+                    <img src={URL.createObjectURL(files.passportPhoto)} alt="Preview" className="w-full h-full object-cover" />
+                  </div>
                  ) : (
                    <CloudUpload className="text-brand-accent" />
                  )}
@@ -153,49 +160,102 @@ export default function StaffRegistration() {
           <SectionCard title="Identification" icon={ShieldCheck} id="id">
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-semibold text-slate-700">Means of ID</label>
-              <select className="px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none focus:border-brand-accent">
-                <option>International Passport</option>
-                <option>National ID Card (NIN)</option>
-                <option>Driver's License</option>
+              <select name="idType" onChange={handleInputChange} value={form.idType} className="px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none focus:border-brand-accent">
+                <option value="International Passport">International Passport</option>
+                <option value="National ID Card">National ID Card</option>
+                <option value="Driver’s License">Driver’s License</option>
+                <option value="Voter’s Card">Voter’s Card</option>
               </select>
             </div>
-            <InputField label="ID Number" placeholder="Ex: A00123456" />
+            <InputField label="ID Number" name="idNumber" placeholder="Ex: A00123456" onChange={handleInputChange} value={form.idNumber} />
+            <InputField label="Issue Date" name="issueDate" type="date" onChange={handleInputChange} value={form.issueDate} />
+          </SectionCard>
+
+          {/* Section: Contact */}
+          <SectionCard title="Contact Information" icon={Phone} id="contact">
+            <InputField label="Email Address" name="email" type="email" placeholder="example@company.com" onChange={handleInputChange} value={form.email} />
+            <InputField label="Phone Number" name="phoneNumber" placeholder="+234..." onChange={handleInputChange} value={form.phoneNumber} />
+            <InputField label="Alternative Phone (Optional)" name="alternativeNumber" placeholder="+234..." onChange={handleInputChange} value={form.alternativeNumber} />
           </SectionCard>
 
           {/* Section: Marital Status (Conditional Logic) */}
           <SectionCard title="Marital Information" icon={Heart} id="marital">
             <div className="md:col-span-2 flex p-1 bg-slate-100 rounded-xl w-fit">
               <button 
-                onClick={() => setMaritalStatus('single')}
-                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${maritalStatus === 'single' ? 'bg-white shadow-sm text-brand-accent' : 'text-slate-500'}`}
+                type="button"
+                onClick={() => setForm(prev => ({ ...prev, maritalStatus: 'Single' }))}
+                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${form.maritalStatus === 'Single' ? 'bg-white shadow-sm text-brand-accent' : 'text-slate-500'}`}
               >Single</button>
               <button 
-                onClick={() => setMaritalStatus('married')}
-                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${maritalStatus === 'married' ? 'bg-white shadow-sm text-brand-accent' : 'text-slate-500'}`}
+                type="button"
+                onClick={() => setForm(prev => ({ ...prev, maritalStatus: 'Married' }))}
+                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${form.maritalStatus === 'Married' ? 'bg-white shadow-sm text-brand-accent' : 'text-slate-500'}`}
               >Married</button>
             </div>
             
-            {maritalStatus === 'married' && (
+            {form.maritalStatus === 'Married' && (
               <motion.div 
                 initial={{ opacity: 0, height: 0 }} 
                 animate={{ opacity: 1, height: 'auto' }}
                 className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 pt-6 border-t border-slate-100"
               >
-                <InputField label="Spouse Name" placeholder="Full legal name" />
-                <InputField label="Spouse Telephone" placeholder="+234..." />
+                <InputField label="Spouse Name" name="spouseName" placeholder="Full legal name" onChange={handleInputChange} value={form.spouseName} />
+                <InputField label="Spouse Telephone" name="spousePhone" placeholder="+234..." onChange={handleInputChange} value={form.spousePhone} />
                 <div className="md:col-span-2">
-                  <InputField label="Spouse Employer" placeholder="Company name" />
+                  <InputField label="Spouse Employer" name="spouseEmployer" placeholder="Company name" onChange={handleInputChange} value={form.spouseEmployer} />
                 </div>
               </motion.div>
             )}
           </SectionCard>
 
+          {/* Section: Education */}
+          <SectionCard title="Education" icon={GraduationCap} id="edu">
+            <InputField label="Qualification" name="qualification" placeholder="e.g. BSc, MSc" onChange={handleInputChange} value={form.qualification} />
+            <InputField label="School Name" name="schoolName" placeholder="University of..." onChange={handleInputChange} value={form.schoolName} />
+            <InputField label="Graduation Year" name="graduationYear" placeholder="YYYY" onChange={handleInputChange} value={form.graduationYear} />
+            <InputField label="Degree Class" name="degreeClass" placeholder="First Class, Second Class Upper..." onChange={handleInputChange} value={form.degreeClass} />
+          </SectionCard>
+
           {/* Financial Section */}
           <SectionCard title="Financial Details" icon={Wallet} id="finance">
-            <InputField label="Bank Name" placeholder="Select bank" />
-            <InputField label="Account Number" placeholder="10 digits" />
+            <InputField label="Bank Name" name="bankName" placeholder="Select bank" onChange={handleInputChange} value={form.bankName} />
+            <InputField label="Account Number" name="accountNumber" placeholder="10 digits" onChange={handleInputChange} value={form.accountNumber} />
             <div className="md:col-span-2">
-               <InputField label="Account Name" placeholder="Verified account name" />
+               <InputField label="Account Name" name="accountName" placeholder="Verified account name" onChange={handleInputChange} value={form.accountName} />
+            </div>
+          </SectionCard>
+
+          {/* Next of Kin */}
+          <SectionCard title="Next of Kin" icon={Users} id="nok">
+            <InputField label="Full Name" name="nextOfKinName" placeholder="Next of Kin Name" onChange={handleInputChange} value={form.nextOfKinName} />
+            <InputField label="Relationship" name="relationship" placeholder="e.g. Brother, Mother" onChange={handleInputChange} value={form.relationship} />
+            <InputField label="Phone Number" name="nextOfKinPhone" placeholder="+234..." onChange={handleInputChange} value={form.nextOfKinPhone} />
+            <div className="md:col-span-2">
+              <InputField label="Address" name="nextOfKinAddress" placeholder="Full address" onChange={handleInputChange} value={form.nextOfKinAddress} />
+            </div>
+          </SectionCard>
+
+          {/* Guarantor */}
+          <SectionCard title="Guarantor" icon={CloudUpload} id="guarantor">
+            <div className="md:col-span-2">
+              <label className="text-sm font-semibold text-slate-700 block mb-2">Guarantor Form (PDF/Image)</label>
+              <input 
+                type="file" className="hidden" ref={guarantorInputRef} 
+                 onChange={(e) => handleFileChange(e, 'guarantor')} 
+                 accept="image/*,.pdf" 
+               />
+              <div className="border-2 border-dashed border-slate-200 rounded-2xl p-8 flex flex-col items-center justify-center bg-slate-50/50 hover:bg-slate-100 hover:border-brand-accent transition-colors cursor-pointer group" onClick={() => guarantorInputRef.current?.click()}>
+                  {files.guarantorForm ? (
+                  <div className="p-4 bg-teal-50 text-teal-600 rounded-lg flex items-center gap-2">
+                    <CloudUpload />
+                    <span className="font-semibold text-sm">File Selected: {files.guarantorForm.name}</span>
+                  </div>
+                 ) : (
+                   <CloudUpload className="text-brand-accent" />
+                 )}
+                <p className="mt-3 text-sm text-slate-600">Drag and drop or <span className="text-brand-accent font-bold">browse</span></p>
+                <p className="text-xs text-slate-400 mt-1">PDF, PNG, JPG up to 5MB</p>
+              </div>
             </div>
           </SectionCard>
 
@@ -207,7 +267,7 @@ export default function StaffRegistration() {
             </div>
             <button
             disabled={isSubmitting} 
-              onClick={() => setIsSubmitting(true)}
+              onClick={handleSubmit}
               className="w-full md:w-auto px-10 py-4 bg-brand-accent hover:bg-teal-500 text-white font-bold rounded-xl shadow-soft transition-all active:scale-95 flex items-center justify-center gap-2"
             >
               {isSubmitting ? "Processing..." : "Submit Registration"}
