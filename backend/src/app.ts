@@ -1,19 +1,32 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from "cookie-parser";
 import helmet from 'helmet';
+
 import staffRoutes from './routes/staff.routes.js';
+import authRoutes from './routes/auth.routes.js';
 import { globalErrorHandler } from './middlewares/error.middleware.js';
+import { env } from './config/env.js';
 
 const app = express();
 
 // Global Middlewares
 app.use(helmet()); // Security headers
-app.use(cors({ origin: process.env.CORS_ORIGIN }));
+app.use(cors({ 
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json()); 
-
+app.use(cookieParser());
 // Routes
 app.use('/api/v1/staff', staffRoutes);
+app.use("/api/v1/auth", authRoutes);
 
+app.listen(env.PORT, () => {
+    console.log(`Server is running on port ${env.PORT}`);
+})
 // Error Handling
 app.use(globalErrorHandler);
 

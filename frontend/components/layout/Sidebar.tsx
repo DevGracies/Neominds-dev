@@ -7,6 +7,7 @@ import {
   LayoutDashboard, Users, UserPlus, FileText, 
   Briefcase, Building2, MessageSquareWarning, Settings, LogOut 
 } from 'lucide-react';
+import Logout from '../button/Logout';
 
 const navItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -56,6 +57,7 @@ export default function Sidebar() {
         })}
       </nav>
 
+        <Logout />
       {/* Bottom Profile Section */}
       <div className="p-4 border-t border-white/10">
         <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 cursor-pointer transition-all">
