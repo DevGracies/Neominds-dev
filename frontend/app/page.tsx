@@ -103,7 +103,7 @@ export default function LoginPage() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 animate-spin" size={20} />
-                  Authenticating...
+                  Authenticating....
                 </>
               ) : (
                 "Login to Dashboard"
