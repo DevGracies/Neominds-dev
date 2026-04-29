@@ -1,15 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Lock, Mail, Loader2 } from 'lucide-react';
+import { Lock, Mail, Loader2 } from 'lucide-react'; // Standard icons
 
 export default function LoginPage() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.SubmitEvent) => {
@@ -28,9 +27,11 @@ export default function LoginPage() {
         })
 
         const res = await data.json();
+        console.log("Response", res)
 
-        if(!data.ok){
-          throw new Error(res.message || "Login Failed")
+        if(!res.success){
+          setError(res.message);
+          throw new Error(res.message || "Login Failed");
         }
         router.push('/dashboard');
     } catch (err: any) {
@@ -39,46 +40,54 @@ export default function LoginPage() {
     }
   };
 
-  if (!mounted) return null; 
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f4f7fe] px-4" suppressHydrationWarning>
+    <div className="flex min-h-screen items-center justify-center bg-[#f4f7fe] px-4 font-sans">
       <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-xl">
+        {/* Header Section */}
         <div className="bg-blue-600 p-8 text-center text-white">
-          <h2 className="text-3xl font-extrabold">HR Portal</h2>
-          <p className="mt-2 opacity-90 text-sm">Sign in to your dashboard</p>
+          <h2 className="text-3xl font-extrabold tracking-tight">HR Portal</h2>
+          <p className="mt-2 text-blue-100 opacity-90">Sign in to manage your team</p>
         </div>
 
+        {/* Form Section */}
         <div className="p-8">
           <form onSubmit={handleLogin} className="space-y-6">
-            {error && <div className="rounded bg-red-50 p-2 text-xs text-red-600 border border-red-100 text-center font-medium">{error}</div>}
+            {error && (
+              <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 border border-red-100">
+                {error}
+              </div>
+            )}
 
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-gray-500 uppercase">Email</label>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-gray-700">Email Address</label>
               <div className="relative">
-                <Mail size={16} className="absolute left-3 top-3 text-gray-400" />
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                  <Mail size={18} />
+                </span>
                 <input
                   type="email"
                   required
-                  suppressHydrationWarning
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-lg border border-gray-200 py-2.5 pl-10 text-sm outline-none focus:border-blue-500"
+                  placeholder="hr@neominds.com"
+                  className="block w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-3 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 outline-none transition-all"
                 />
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-gray-500 uppercase">Password</label>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-gray-700">Password</label>
               <div className="relative">
-                <Lock size={16} className="absolute left-3 top-3 text-gray-400" />
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                  <Lock size={18} />
+                </span>
                 <input
                   type="password"
                   required
-                  suppressHydrationWarning
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-lg border border-gray-200 py-2.5 pl-10 text-sm outline-none focus:border-blue-500"
+                  placeholder="••••••••"
+                  className="block w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-3 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 outline-none transition-all"
                 />
               </div>
             </div>
@@ -88,9 +97,20 @@ export default function LoginPage() {
               disabled={isLoading || !email || !password}
               className="flex w-full items-center justify-center rounded-lg bg-blue-600 py-3 text-sm font-bold text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all disabled:opacity-70"
             >
-              {isLoading ? <Loader2 className="animate-spin" size={20} /> : "Login to Dashboard"}
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 animate-spin" size={20} />
+                  Authenticating...
+                </>
+              ) : (
+                "Login to Dashboard"
+              )}
             </button>
           </form>
+
+          <div className="mt-8 text-center text-xs text-gray-400">
+            &copy; 2026 Neominds Departmental Project
+          </div>
         </div>
       </div>
     </div>
