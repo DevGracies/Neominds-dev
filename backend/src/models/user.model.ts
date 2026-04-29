@@ -12,8 +12,6 @@ export interface IUser extends Document {
 
   lastLogin?: Date;
   passwordChangedAt?: Date;
-
-//   comparePassword(userPassword: string): Promise<boolean>;
 }
 
 // User Schema model
