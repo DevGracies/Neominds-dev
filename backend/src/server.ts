@@ -1,17 +1,14 @@
 // src/server.ts
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import app from './app.js';
 
 // 1. Handle Uncaught Exceptions (e.g., console.log(x) where x is not defined)
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', (err: Error) => {
   console.error('UNCAUGHT EXCEPTION! Shutting down...');
   console.error(err.name, err.message);
   process.exit(1);
 });
-
-// Load environment variables
-dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 const DB = process.env.MONGO_URI?.replace(
@@ -39,7 +36,7 @@ mongoose
       });
     });
   })
-  .catch((err) => {
+  .catch((err: Error) => {
     console.error(' MongoDB connection error:', err);
     process.exit(1);
   });
