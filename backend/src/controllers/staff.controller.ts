@@ -1,9 +1,9 @@
 // src/controllers/staff.controller.ts
 import { Request, Response, NextFunction } from 'express';
-import * as StaffService from '../services/staff.service';
-import { catchAsync } from '../utils/catchAsync';
+import * as StaffService from '../services/staff.service.js';
+import { catchAsync } from '../utils/catchAsync.js';
 
-export const registerStaff = catchAsync(async (req: Request, res: Response) => {
+export const registerStaff = catchAsync(async (req: Request & { files?: any }, res: Response) => {
   const staff = await StaffService.createStaffRecord(req.body, req.files);
   
   res.status(201).json({
