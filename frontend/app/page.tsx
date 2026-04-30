@@ -191,10 +191,33 @@ export default function LoginPage() {
                   </>
                 )}
               </button>
-            </form>           
+            </form>
+
+            {/* Test Credentials */}
+            <div className="mt-6 rounded-xl bg-blue-500/10 border border-blue-500/20 p-4 backdrop-blur-sm">
+              <div className="flex items-start gap-2">
+                <ShieldCheck size={16} className="text-blue-400 mt-0.5 shrink-0" />
+                <div className="flex-1">
+                  <p className="text-xs font-semibold text-blue-300 mb-2">Quick Login (Admin)</p>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-gray-400 text-xs">Admin Access:</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEmail('hr@neominds.com');
+                        setPassword('hrneominds123');
+                      }}
+                      className="text-blue-300 hover:text-blue-200 font-mono bg-white/5 px-3 py-1.5 rounded hover:bg-white/10 transition-colors text-[11px]"
+                    >
+                      hr@neominds.com
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
             
             {/* Security Badge */}
-            <div className="mt-6 flex items-center justify-center gap-2 text-xs text-gray-300">
+            <div className="mt-4 flex items-center justify-center gap-2 text-xs text-gray-300">
               <ShieldCheck size={14} className="text-green-400" />
               <span>End-to-end encrypted connection</span>
             </div>
