@@ -11,5 +11,8 @@
     "tsx": "^4.21.0",
     "typescript": "^5.5.3"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "framer-motion": "^12.38.0"
+  }
 }
