@@ -10,7 +10,9 @@ const app = express();
 
 // Global Middlewares
 app.use(helmet()); // Security headers
-app.use(cors({ origin: process.env.CORS_ORIGIN }));
+app.use(cors({ origin: process.env.CORS_ORIGIN,
+    credentials: true
+ }));
 app.use(express.json()); 
 
 // Routes
