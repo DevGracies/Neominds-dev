@@ -1,6 +1,6 @@
 // src/services/staff.service.ts
-import { Staff, IStaff } from '../models/staff.model';
-import { uploadToCloudinary } from '../utils/cloudinary';
+import { Staff, IStaff } from '../models/staff.model.js';
+import { uploadToCloudinary } from '../utils/cloudinary.js';
 
 export const createStaffRecord = async (data: any, files: any) => {
   // 1. Upload files to Cloudinary in parallel for speed

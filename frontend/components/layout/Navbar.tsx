@@ -51,6 +51,7 @@ export default function Navbar() {
         <button className="p-2 text-gray-400 hover:text-brand-navy hover:bg-gray-100 rounded-full transition-all">
           <HelpCircle size={20} />
         </button>
+        <div className='text-white border-white border p-2 rounded-full'>{user && initials}</div>
 
    <div className='text-white border-white border p-2 rounded-full'>{user && initials}</div>
 
