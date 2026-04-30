@@ -20,6 +20,7 @@ export const InputField = ({ label, placeholder, type = "text", ...props }: any)
     <label className="text-sm font-semibold text-slate-700 ml-1">{label}</label>
     <input 
       type={type}
+      // type=''
       placeholder={placeholder}
       className="px-4 py-3 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-none transition-all duration-200 placeholder:text-slate-400"
       {...props}

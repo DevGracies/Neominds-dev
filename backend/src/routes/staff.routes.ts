@@ -13,7 +13,7 @@ router.post(
     { name: 'passportPhoto', maxCount: 1 },
     { name: 'guarantorForm', maxCount: 1 }
   ]),
-  validate(staffSchema), // Validates fields after Multer parses the body
+  // validate(staffSchema), // Validates fields after Multer parses the body
   registerStaff
 );
 

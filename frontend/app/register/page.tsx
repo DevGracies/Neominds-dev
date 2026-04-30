@@ -4,8 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { 
   User, ShieldCheck, Phone, Heart, GraduationCap, 
-  Wallet, Users, CloudUpload, CheckCircle2, Loader2 
+  Wallet, Users, CloudUpload, CheckCircle2, Loader2 ,BookUser
 } from 'lucide-react';
+
 import { SectionCard, InputField } from '@/components/ui/FormPrimitives';
 import { registerStaff } from '@/services/staff.service';
 import { toast, Toaster } from 'react-hot-toast';
@@ -50,10 +51,16 @@ export default function StaffRegistration() {
 
   // --- Handlers ---
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    console.log(e.target.value)
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
   };
-
+const handleMarried=()=>{
+  setMaritalStatus('married')
+  form.maritalStatus='married'
+  console.log(form)
+  
+}
  const handleFileChange = (
   e: React.ChangeEvent<HTMLInputElement>,
   type: string
@@ -70,10 +77,10 @@ export default function StaffRegistration() {
 };
 
   const handleSubmit = async () => {
-    if (!form.email || !form.surname || !files.passportPhoto) {
-      toast.error("Please fill in required fields and upload your passport.");
-      return;
-    }
+    // if (!form.email || !form.surname || !files.passportPhoto) {
+    //   toast.error("Please fill in required fields and upload your passport.");
+    //   return;
+    // }
 
     setIsSubmitting(true);
     const formData = new FormData();
@@ -87,6 +94,7 @@ export default function StaffRegistration() {
 
     try {
       await registerStaff(formData);
+      console.log(formData)
       toast.success("Registration Successful! Welcome to the team.");
       // Optional: Reset form or redirect
     } catch (err: any) {
@@ -124,8 +132,12 @@ export default function StaffRegistration() {
           
           {/* Section: Personal Info */}
           <SectionCard title="Personal Information" icon={User} id="personal">
-            <InputField label="Surname" placeholder="Enter surname" onChange={handleInputChange} value={form.surname} />
-            <InputField label="First Name" placeholder="Enter first name" onChange={handleInputChange} value={form.firstName} />
+            <InputField label="First Name" name="firstName" placeholder="Enter first name" onChange={handleInputChange} value={form.firstName} />
+            <InputField label="last Name" name="lastName" placeholder="Enter last name" onChange={handleInputChange} value={form.firstName} />
+            <div className="md:col-span-2">
+            
+            <InputField label="Surname" name="surname" placeholder="Enter surname" onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement, Element>)=>handleInputChange(e)} value={form.surname} />
+            </div>
             <div className="md:col-span-2">
               <label className="text-sm font-semibold text-slate-700 block mb-2">Passport Photograph</label>
               <input 
@@ -145,17 +157,26 @@ export default function StaffRegistration() {
             </div>
           </SectionCard>
 
+          {/* section: contact */}
+          <SectionCard title="contact" icon={BookUser} id="contact">
+            <InputField label="Phone Number" type="number" onChange={handleInputChange} name="phoneNumber" placeholder="enter phone number" />
+            <InputField label="alternative Number" type="number" onChange={handleInputChange} name="alternativeNumber" placeholder="enter alt phone number" />
+            <div className="md:col-span-2">
+               <InputField label="email" type="email" onChange={handleInputChange} name="email" placeholder="enter your email address" />
+            </div>
+          </SectionCard>
+
           {/* Section: Identification */}
           <SectionCard title="Identification" icon={ShieldCheck} id="id">
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-semibold text-slate-700">Means of ID</label>
-              <select className="px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none focus:border-teal-500">
-                <option>International Passport</option>
-                <option>National ID Card (NIN)</option>
-                <option>Driver's License</option>
+              <select name="idType" onChange={handleInputChange}  className="px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none focus:border-teal-500">
+                <option value={"International Passport"}>International Passport</option>
+                <option value={"National ID Card (NIN)"}>National ID Card (NIN)</option>
+                <option value={"Driver's License"}>Driver's License</option>
               </select>
             </div>
-            <InputField label="ID Number" placeholder="Ex: A00123456" />
+            <InputField label="ID Number" name="idNumber" onChange={handleInputChange} placeholder="Ex: A00123456" />
           </SectionCard>
 
           {/* Section: Marital Status (Conditional Logic) */}
@@ -166,7 +187,7 @@ export default function StaffRegistration() {
                 className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${maritalStatus === 'single' ? 'bg-white shadow-sm text-teal-600' : 'text-slate-500'}`}
               >Single</button>
               <button 
-                onClick={() => setMaritalStatus('married')}
+                onClick={handleMarried}
                 className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${maritalStatus === 'married' ? 'bg-white shadow-sm text-teal-600' : 'text-slate-500'}`}
               >Married</button>
             </div>
@@ -177,10 +198,10 @@ export default function StaffRegistration() {
                 animate={{ opacity: 1, height: 'auto' }}
                 className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 pt-6 border-t border-slate-100"
               >
-                <InputField label="Spouse Name" placeholder="Full legal name" />
-                <InputField label="Spouse Telephone" placeholder="+234..." />
+                <InputField label="Spouse Name"  onChange={handleInputChange} name="spouseName" placeholder="Full legal name" />
+                <InputField label="Spouse Telephone"  onChange={handleInputChange} name="spousePhone" placeholder="+234..." />
                 <div className="md:col-span-2">
-                  <InputField label="Spouse Employer" placeholder="Company name" />
+                  <InputField label="Spouse Employer"  onChange={handleInputChange} name="spouseEmployer" placeholder="Company name" />
                 </div>
               </motion.div>
             )}
@@ -188,10 +209,10 @@ export default function StaffRegistration() {
 
           {/* Financial Section */}
           <SectionCard title="Financial Details" icon={Wallet} id="finance">
-            <InputField label="Bank Name" placeholder="Select bank" />
-            <InputField label="Account Number" placeholder="10 digits" />
+            <InputField label="Bank Name"  onChange={handleInputChange} name="bankName" placeholder="Select bank" />
+            <InputField label="Account Number"  onChange={handleInputChange} name="accountNumber" placeholder="10 digits" />
             <div className="md:col-span-2">
-               <InputField label="Account Name" placeholder="Verified account name" />
+               <InputField label="Account Name"  onChange={handleInputChange} name="accountName" placeholder="Verified account name" />
             </div>
           </SectionCard>
 
@@ -203,7 +224,7 @@ export default function StaffRegistration() {
             </div>
             <button
             disabled={isSubmitting} 
-              onClick={() => setIsSubmitting(true)}
+              onClick={handleSubmit}
               className="w-full md:w-auto px-10 py-4 bg-teal-500 hover:bg-teal-400 text-[#0B1F3B] font-bold rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
             >
               {isSubmitting ? "Processing..." : "Submit Registration"}
