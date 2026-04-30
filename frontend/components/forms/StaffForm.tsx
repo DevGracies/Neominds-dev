@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-
 function PersonalInfo() {
   return (
     <div className="space-y-4">
@@ -174,7 +173,9 @@ export default function StaffForm() {
         className="space-y-6"
       >
         {step === 1 && <PersonalInfo />}
-        {step === 2 && <Identification married={married} setMarried={setMarried} />}
+        {step === 2 && (
+          <Identification married={married} setMarried={setMarried} />
+        )}
         {step === 3 && <Education />}
         {step === 4 && <Financial />}
         {step === 5 && <Guarantor />}
@@ -182,10 +183,7 @@ export default function StaffForm() {
 
       {/* Navigation */}
       <div className="flex justify-between mt-10">
-        <button
-          onClick={prev}
-          className="px-4 py-2 rounded-lg border"
-        >
+        <button onClick={prev} className="px-4 py-2 rounded-lg border">
           Back
         </button>
 
@@ -205,4 +203,3 @@ export default function StaffForm() {
     </div>
   );
 }
-
