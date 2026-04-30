@@ -1,20 +1,28 @@
 // components/layout/Sidebar.tsx
 "use client";
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { 
-  LayoutDashboard, Users, UserPlus, FileText, 
-  Briefcase, Building2, MessageSquareWarning, Settings, LogOut 
-} from 'lucide-react';
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  LayoutDashboard,
+  Users,
+  UserPlus,
+  FileText,
+  Briefcase,
+  Building2,
+  MessageSquareWarning,
+  Settings,
+  LogOut,
+} from "lucide-react";
+import Logout from "../button/Logout";
 
 const navItems = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Staff Management', href: '/staff', icon: Users },
-  { name: 'HR Actions', href: '/hr-actions', icon: Briefcase },
-  { name: 'Salary Schedule', href: '/salary', icon: FileText },
-  { name: 'Branches', href: '/branches', icon: Building2 },
-  { name: 'Complaints', href: '/complaints', icon: MessageSquareWarning },
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Staff Management", href: "/staff", icon: Users },
+  { name: "HR Actions", href: "/hr-actions", icon: Briefcase },
+  { name: "Salary Schedule", href: "/salary", icon: FileText },
+  { name: "Branches", href: "/branches", icon: Building2 },
+  { name: "Complaints", href: "/complaints", icon: MessageSquareWarning },
 ];
 
 export default function Sidebar() {
@@ -23,7 +31,7 @@ export default function Sidebar() {
   return (
     <aside className="w-64 bg-brand-navy h-full flex flex-col border-r border-gray-200 dark:border-gray-800 shadow-sm">
       {/* Brand Logo */}
-      
+
       <div className="p-8">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-brand-teal rounded-lg flex items-center justify-center shadow-lg shadow-brand-teal/20">
@@ -44,18 +52,21 @@ export default function Sidebar() {
               key={item.name}
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-                isActive 
-                  ? 'bg-brand-teal  shadow-md' 
-                  : 'hover:bg-white/5 hover:'
+                isActive
+                  ? "bg-brand-teal  shadow-md"
+                  : "hover:bg-white/5 hover:"
               }`}
             >
-              <item.icon size={20} className={`${isActive ? '' : 'text-slate-400 group-hover:text-brand-teal'}`} />
+              <item.icon
+                size={20}
+                className={`${isActive ? "" : "text-slate-400 group-hover:text-brand-teal"}`}
+              />
               <span className="text-sm font-medium">{item.name}</span>
             </Link>
           );
         })}
       </nav>
-
+      <Logout />
       {/* Bottom Profile Section */}
       <div className="p-4 border-t border-white/10">
         <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 cursor-pointer transition-all">
