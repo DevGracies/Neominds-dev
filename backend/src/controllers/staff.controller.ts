@@ -4,6 +4,7 @@ import * as StaffService from '../services/staff.service';
 import { catchAsync } from '../utils/catchAsync';
 
 export const registerStaff = catchAsync(async (req: Request, res: Response) => {
+  console.log(req)
   const staff = await StaffService.createStaffRecord(req.body, req.files);
   
   res.status(201).json({

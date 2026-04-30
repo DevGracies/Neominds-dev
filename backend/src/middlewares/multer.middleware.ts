@@ -1,5 +1,5 @@
 import multer from 'multer';
-import { AppError } from '../utils/AppError';
+import { AppError } from '../utils/AppErrror';
 
 // Store in memory temporary so we can pipe it to Cloudinary
 const storage = multer.memoryStorage();

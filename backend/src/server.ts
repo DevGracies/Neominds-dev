@@ -20,26 +20,30 @@ const DB = process.env.MONGO_URI?.replace(
 ) || 'mongodb://localhost:27017/staff_portal';
 
 // 2. Database Connection
-mongoose
-  .connect(DB)
-  .then(() => {
-    console.log('MongoDB connection successful!');
+// mongoose
+//   .connect("mongodb://localhost:27017/staff_portal")
+//   .then(() => {
+//     console.log('MongoDB connection successful!');
     
-    // 3. Start Server
-    const server = app.listen(PORT, () => {
+//     // 3. Start Server
+//     const server = app.listen(PORT, () => {
+//       console.log(` Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+//     });
+
+//     // 4. Handle Unhandled Rejections (e.g., failed DB connection)
+//     process.on('unhandledRejection', (err: any) => {
+//       console.error('UNHANDLED REJECTION!  Shutting down...');
+//       console.error(err.name, err.message);
+//       server.close(() => {
+//         process.exit(1);
+//       });
+//     });
+//   })
+//   .catch((err) => {
+//     console.error(' MongoDB connection error:', err);
+//     process.exit(1);
+//   });
+
+   const server = app.listen(PORT, () => {
       console.log(` Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
     });
-
-    // 4. Handle Unhandled Rejections (e.g., failed DB connection)
-    process.on('unhandledRejection', (err: any) => {
-      console.error('UNHANDLED REJECTION!  Shutting down...');
-      console.error(err.name, err.message);
-      server.close(() => {
-        process.exit(1);
-      });
-    });
-  })
-  .catch((err) => {
-    console.error(' MongoDB connection error:', err);
-    process.exit(1);
-  });
