@@ -1,5 +1,4 @@
 import { Schema, model, Document } from "mongoose";
-import bcrypt from "bcrypt";
 
 // User Schema type
 export interface IUser extends Document {

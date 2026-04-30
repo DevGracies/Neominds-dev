@@ -53,6 +53,8 @@ export default function Navbar() {
         </button>
         <div className='text-white border-white border p-2 rounded-full'>{user && initials}</div>
 
+   <div className='text-white border-white border p-2 rounded-full'>{user && initials}</div>
+
         <div className="h-6 w-px bg-gray-200 mx-1" />
 
         <div className="flex items-center gap-3 pl-2">
