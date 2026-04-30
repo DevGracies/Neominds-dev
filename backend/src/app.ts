@@ -3,6 +3,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import staffRoutes from './routes/staff.routes.js';
 import { globalErrorHandler } from './middlewares/error.middleware.js';
+import { env } from './config/env.js';
+import authRoutes from './routes/auth.routes.js';
 
 const app = express();
 
@@ -13,7 +15,12 @@ app.use(express.json());
 
 // Routes
 app.use('/api/v1/staff', staffRoutes);
-app.use()
+// app.use()
+app.use("/api/v1/auth", authRoutes);
+
+app.listen(env.PORT, () => {
+    console.log(`Server is running on port ${env.PORT}`);
+})
 
 // Error Handling
 app.use(globalErrorHandler);
