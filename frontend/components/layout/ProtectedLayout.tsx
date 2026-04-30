@@ -10,7 +10,7 @@ export default function ProtectedLayout ({ children }: {children: ReactNode }) {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace("/login");
+      router.replace("/");
     }
   }, [user, loading, router]);
 
