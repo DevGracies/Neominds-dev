@@ -2,17 +2,17 @@
 
 import { useState } from "react";
 import { submitComplaint } from "./ComplaintTable";
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || " http://localhost:3000/api/v1";
 
 type ComplaintFormProps = {
   onSubmit: (data: any) => void;
 };
 
 export default function ComplaintForm({ onSubmit }: ComplaintFormProps) {
+
   const [employee, setEmployee] = useState("");
   const [role, setRole] = useState("");
   const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,29 +24,32 @@ export default function ComplaintForm({ onSubmit }: ComplaintFormProps) {
       status: "Pending",
       date: new Date().toISOString().split("T")[0],
     };
+
     try {
+      setLoading(true);
+
       const savedComplaint = await submitComplaint(newComplaint);
+
+      // send ONLY once
       onSubmit(savedComplaint);
 
-    // send data to parent
-    onSubmit(newComplaint);
+      // reset form
+      setEmployee("");
+      setRole("");
+      setText("");
 
-    // reset form
-    setEmployee("");
-
-    setText("");
-
-    setRole("");
-    }catch (error) {
+    } catch (error) {
       console.error("Error submitting complaint:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-soft">
-      <h2 className="text-xl font-semibold mb-4">Submit Complaint</h2>
+    <div className="bg-white p-6 rounded-xl shadow-soft text-black">
 
       <form onSubmit={handleSubmit} className="space-y-4">
+
         <input
           className="input"
           placeholder="Employee Name"
@@ -65,19 +68,26 @@ export default function ComplaintForm({ onSubmit }: ComplaintFormProps) {
 
         <textarea
           className="input h-32"
-          placeholder="Write text..."
+          placeholder="Write complaint..."
           value={text}
           onChange={(e) => setText(e.target.value)}
           required
         />
 
-        <button
-          type="submit"
-          className="bg-secondary text-black px-6 py-2 rounded-lg"
-        >
-          Submit Complaint
-        </button>
+        <div className="flex justify-center">
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="px-5 py-2.5 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl font-medium transition"
+          >
+            {loading ? "Submitting..." : "Submit Complaint"}
+          </button>
+
+        </div>
+
       </form>
+
     </div>
   );
 }

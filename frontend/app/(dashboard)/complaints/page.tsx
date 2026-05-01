@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ComplaintForm from "@/components/complaints/ComplaintForm";
-import ComplaintTable, { fetchComplaints } from "@/components/complaints/ComplaintTable";
+import ComplaintTable, { fetchComplaints } from "@/components/staff/ComplaintTable";
 
 export default function ComplaintDashboard() {
   const [complaints, setComplaints] = useState<any[]>([]);
@@ -13,23 +12,17 @@ export default function ComplaintDashboard() {
       .catch(console.error);
   }, []);
 
-  const handleFormSubmit = async (_submittedData: any) => {
-  // After the form has successfully posted, refetch all complaints
-  const updated = await fetchComplaints();
-  setComplaints(updated ?? []);
-};
-
   return (
     <div className="space-y-6">
+
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-brand-navy font-display">
           Employee Complaints
         </h2>
       </div>
 
-      <ComplaintForm onSubmit={handleFormSubmit} />
-
       <ComplaintTable complaints={complaints} />
+
     </div>
   );
 }

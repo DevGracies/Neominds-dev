@@ -7,6 +7,7 @@ import staffRoutes from './routes/staff.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import { globalErrorHandler } from './middlewares/error.middleware.js';
 import { env } from './config/env.js';
+import complaintRouter from './routes/complaints.routes.js';
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 // Routes
 app.use('/api/v1/staff', staffRoutes);
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/complaints", complaintRouter);
 
 // Error Handling
 app.use(globalErrorHandler);
