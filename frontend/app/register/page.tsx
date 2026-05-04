@@ -297,7 +297,7 @@ const handleMarried=()=>{
             <InputField label="Name" name="nextOfKinName" placeholder="Enter name of next of kin" onChange={handleInputChange} value={form.nextOfKinName} />
             <InputField label="Relationship" name="relationship" placeholder="Enter relationship" onChange={handleInputChange} value={form.relationship} />
             <InputField label="Address" name="nextOfKinAddress" placeholder="Enter address of next of kin" onChange={handleInputChange} value={form.nextOfKinAddress} />
-            <InputField label=" Phone number" name="phoneNumber" type="number" placeholder="Enter phone number of next of kin" onChange={handleInputChange}  />
+            <InputField label=" Phone number" name="nextOfKinPhone" type="number" placeholder="Enter phone number of next of kin" onChange={handleInputChange}  />
             {/* <InputField label="Phone Number" type="number" onChange={handleInputChange} name="phoneNumber" placeholder="enter phone number" /> */}
             
             <div className="md:col-span-2">
