@@ -10,6 +10,7 @@ import {
 import { SectionCard, InputField } from '@/components/ui/FormPrimitives';
 import { registerStaff } from '@/services/staff.service';
 import { toast, Toaster } from 'react-hot-toast';
+import { json } from 'stream/consumers';
 
 const SECTIONS = [
   { id: 'personal', label: 'Personal', icon: User },
@@ -92,9 +93,9 @@ const handleMarried=()=>{
     if (files.passportPhoto) formData.append('passportPhoto', files.passportPhoto);
     if (files.guarantorForm) formData.append('guarantorForm', files.guarantorForm);
 
+    console.log(form)
     try {
       await registerStaff(formData);
-      console.log(formData)
       toast.success("Registration Successful! Welcome to the team.");
       // Optional: Reset form or redirect
     } catch (err: any) {
@@ -133,7 +134,7 @@ const handleMarried=()=>{
           {/* Section: Personal Info */}
           <SectionCard title="Personal Information" icon={User} id="personal">
             <InputField label="First Name" name="firstName" placeholder="Enter first name" onChange={handleInputChange} value={form.firstName} />
-            <InputField label="last Name" name="lastName" placeholder="Enter last name" onChange={handleInputChange} value={form.firstName} />
+            <InputField label="last Name" name="lastName" placeholder="Enter last name" onChange={handleInputChange} value={form.lastName} />
             <div className="md:col-span-2">
             
             <InputField label="Surname" name="surname" placeholder="Enter surname" onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement, Element>)=>handleInputChange(e)} value={form.surname} />

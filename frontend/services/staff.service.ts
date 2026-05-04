@@ -2,6 +2,9 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
 
 export const registerStaff = async (formData: FormData) => {
+
+// export const registerStaff = async (formData: string) => {
+  // console.log([...formData.entries()]);
   try {
     const response = await fetch(`${API_URL}/staff/register`, {
       method: "POST",
