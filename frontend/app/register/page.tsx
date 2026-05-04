@@ -4,9 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { 
   User, ShieldCheck, Phone, Heart, GraduationCap, 
-  Wallet, Users, CloudUpload, CheckCircle2, Loader2 ,BookUser
+  Wallet, Users, CloudUpload, CheckCircle2, Loader2 ,BookUser,
+  Contact,
 } from 'lucide-react';
-
 import { SectionCard, InputField } from '@/components/ui/FormPrimitives';
 import { registerStaff } from '@/services/staff.service';
 import { toast, Toaster } from 'react-hot-toast';
@@ -48,17 +48,32 @@ export default function StaffRegistration() {
     guarantorForm: null
   });
 
+  const qualifications = [
+  { value: "SSCE", label: "SSCE (Senior Secondary School Certificate)" },
+  { value: "OND", label: "OND (Ordinary National Diploma)" },
+  { value: "HND", label: "HND (Higher National Diploma)" },
+
+  { value: "BSc", label: "BSc (Bachelor of Science)" },
+  { value: "BA", label: "BA (Bachelor of Arts)" },
+  { value: "BEng", label: "BEng (Bachelor of Engineering)" },
+  { value: "BTech", label: "B.Tech (Bachelor of Technology)" },
+
+  { value: "MSc", label: "MSc (Master of Science)" },
+  { value: "MA", label: "MA (Master of Arts)" },
+  { value: "MBA", label: "MBA (Master of Business Administration)" },
+
+  { value: "PhD", label: "PhD (Doctor of Philosophy)" },
+];
   const [previews, setPreviews] = useState({ passport: '', guarantor: '' });
 
   // --- Handlers ---
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    console.log(e.target.value)
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
   };
 const handleMarried=()=>{
-  setMaritalStatus('married')
-  form.maritalStatus='married'
+  setMaritalStatus('Married')
+  form.maritalStatus='Married'
   console.log(form)
   
 }
@@ -88,6 +103,7 @@ const handleMarried=()=>{
 
     // Append text fields (exactly matching the Backend Zod/Mongoose schema)
     Object.entries(form).forEach(([key, value]) => formData.append(key, value));
+    console.log(form)
     
     // Append Files
     if (files.passportPhoto) formData.append('passportPhoto', files.passportPhoto);
@@ -135,9 +151,12 @@ const handleMarried=()=>{
           <SectionCard title="Personal Information" icon={User} id="personal">
             <InputField label="First Name" name="firstName" placeholder="Enter first name" onChange={handleInputChange} value={form.firstName} />
             <InputField label="last Name" name="lastName" placeholder="Enter last name" onChange={handleInputChange} value={form.lastName} />
-            <div className="md:col-span-2">
+            <InputField label="surName" name="surname" placeholder="Enter sur name" onChange={handleInputChange} value={form.surname} />
             
-            <InputField label="Surname" name="surname" placeholder="Enter surname" onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement, Element>)=>handleInputChange(e)} value={form.surname} />
+            <InputField label="Date of birth" name="dateOfBirth" type="date" placeholder="Enter your date of birth" onChange={handleInputChange} value={form.dateOfBirth} />
+            <div className="md:col-span-2">
+            <InputField label="Address" name="address" placeholder="Enter address" onChange={handleInputChange} value={form.address} />
+            
             </div>
             <div className="md:col-span-2">
               <label className="text-sm font-semibold text-slate-700 block mb-2">Passport Photograph</label>
@@ -159,7 +178,7 @@ const handleMarried=()=>{
           </SectionCard>
 
           {/* section: contact */}
-          <SectionCard title="contact" icon={BookUser} id="contact">
+          <SectionCard title="contact" icon={Contact} id="contact">
             <InputField label="Phone Number" type="number" onChange={handleInputChange} name="phoneNumber" placeholder="enter phone number" />
             <InputField label="alternative Number" type="number" onChange={handleInputChange} name="alternativeNumber" placeholder="enter alt phone number" />
             <div className="md:col-span-2">
@@ -169,31 +188,34 @@ const handleMarried=()=>{
 
           {/* Section: Identification */}
           <SectionCard title="Identification" icon={ShieldCheck} id="id">
-            <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-semibold text-slate-700">Means of ID</label>
-              <select name="idType" onChange={handleInputChange}  className="px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none focus:border-teal-500">
+            <div className="flex flex-col ">
+              <label className="text-sm font-semibold text-slate-700  mb-[0.45rem]">Means of ID</label>
+              <select name="idType" onChange={handleInputChange}  className="px-4 py-[0.8rem]  rounded-xl border border-slate-200 bg-white outline-none focus:border-teal-500">
                 <option value={"International Passport"}>International Passport</option>
                 <option value={"National ID Card (NIN)"}>National ID Card (NIN)</option>
                 <option value={"Driver's License"}>Driver's License</option>
               </select>
             </div>
             <InputField label="ID Number" name="idNumber" onChange={handleInputChange} placeholder="Ex: A00123456" />
+               <div className="md:col-span-2">
+                <InputField label="issue date" name="issueDate" type="date" placeholder="Enter the issued date" onChange={handleInputChange} value={form.issueDate} />
+            </div>   
           </SectionCard>
 
           {/* Section: Marital Status (Conditional Logic) */}
           <SectionCard title="Marital Information" icon={Heart} id="marital">
             <div className="md:col-span-2 flex p-1 bg-slate-100 rounded-xl w-fit">
               <button 
-                onClick={() => setMaritalStatus('single')}
-                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${maritalStatus === 'single' ? 'bg-white shadow-sm text-teal-600' : 'text-slate-500'}`}
+                onClick={() => setMaritalStatus('Single')}
+                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${maritalStatus === 'Single' ? 'bg-white shadow-sm text-teal-600' : 'text-slate-500'}`}
               >Single</button>
               <button 
                 onClick={handleMarried}
-                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${maritalStatus === 'married' ? 'bg-white shadow-sm text-teal-600' : 'text-slate-500'}`}
+                className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${maritalStatus === 'Married' ? 'bg-white shadow-sm text-teal-600' : 'text-slate-500'}`}
               >Married</button>
             </div>
             
-            {maritalStatus === 'married' && (
+            {maritalStatus === 'Married' && (
               <motion.div 
                 initial={{ opacity: 0, height: 0 }} 
                 animate={{ opacity: 1, height: 'auto' }}
@@ -207,7 +229,60 @@ const handleMarried=()=>{
               </motion.div>
             )}
           </SectionCard>
+            {/* Section: Qualification */}
+            
+          <SectionCard title="Education" icon={GraduationCap} id="edu">
+            <div className="flex flex-col ">
+            <label className="text-sm font-semibold text-slate-700 ml-1 mb-[0.45rem]">Degree</label>
 
+            <select
+              name="qualification"
+              onChange={handleInputChange}
+              className="px-4 py-[0.8rem] rounded-xl border border-slate-200 bg-white outline-none focus:border-teal-500"
+            >
+              <option value="">Select Qualification</option>
+
+              {qualifications.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </div>
+           
+            <InputField label="School Name" name="schoolName" placeholder="Enter name of institution" onChange={handleInputChange} value={form.schoolName} />
+            <InputField
+            label="Year of Graduation" 
+            name="graduationYear"
+              type="number"
+              value={form.graduationYear} 
+              min="1900"
+              max={new Date().getFullYear()}
+              step="1"
+              placeholder="Enter year (e.g. 2024)"
+              onChange={handleInputChange}
+            />
+            <div className="flex flex-col ">
+            <label className="text-sm font-semibold text-slate-700 mb-[0.45rem]">Degree Class</label>
+
+            <select
+              name="degreeClass"
+              onChange={handleInputChange}
+              className="px-4 py-[0.8rem]  rounded-xl border border-slate-200 bg-white outline-none focus:border-teal-500"
+            >
+              <option value="">Select Degree Class</option>
+
+              <option value="First Class">First Class Honours</option>
+              <option value="Second Class Upper">Second Class Upper (2:1)</option>
+              <option value="Second Class Lower">Second Class Lower (2:2)</option>
+              <option value="Third Class">Third Class</option>
+              <option value="Pass">Pass</option>
+
+              <option value="Distinction">Distinction (for HND/NCE where applicable)</option>
+              <option value="Merit">Merit</option>
+            </select>
+            </div>
+          </SectionCard>
           {/* Financial Section */}
           <SectionCard title="Financial Details" icon={Wallet} id="finance">
             <InputField label="Bank Name"  onChange={handleInputChange} name="bankName" placeholder="Select bank" />
@@ -215,6 +290,20 @@ const handleMarried=()=>{
             <div className="md:col-span-2">
                <InputField label="Account Name"  onChange={handleInputChange} name="accountName" placeholder="Verified account name" />
             </div>
+          </SectionCard>
+                
+          {/* Section: Next of KIn */}
+          <SectionCard title="Next of Kin Information" icon={Users} id="nok">
+            <InputField label="Name" name="nextOfKinName" placeholder="Enter name of next of kin" onChange={handleInputChange} value={form.nextOfKinName} />
+            <InputField label="Relationship" name="relationship" placeholder="Enter relationship" onChange={handleInputChange} value={form.relationship} />
+            <InputField label="Address" name="nextOfKinAddress" placeholder="Enter address of next of kin" onChange={handleInputChange} value={form.nextOfKinAddress} />
+            <InputField label=" Phone number" name="phoneNumber" type="number" placeholder="Enter phone number of next of kin" onChange={handleInputChange}  />
+            {/* <InputField label="Phone Number" type="number" onChange={handleInputChange} name="phoneNumber" placeholder="enter phone number" /> */}
+            
+            <div className="md:col-span-2">
+            
+            </div>
+          
           </SectionCard>
 
           {/* Submission Area */}
